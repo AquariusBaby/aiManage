@@ -1,0 +1,19 @@
+.app {
+    width: 100%;
+    height: 100vh;
+
+    .menuWrap {
+        height: 100%;
+
+        .menuList {
+            height: 100%;
+            overflow-y: scroll;
+        }
+    }
+
+    .contentWrap {
+        padding: 0 20px;
+        height: 100%;
+        overflow-y: scroll;
+    }
+}

@@ -10,6 +10,7 @@ import GConfig from "../config";
 //       .join("&")
 //   );
 // }
+// let noLoginFlag = false;
 
 // Axios.defaults.headers.common[''] = ''
 const requestDefaultConfig = {
@@ -110,6 +111,16 @@ customAxios.interceptors.response.use(
     // return response.data;
     // return buffer;
     // }
+    // console.log(response, 'response')
+    // if (noLoginFlag) {
+    //   return {};
+    // }
+    // if (response?.data?.code === 202 && window.location?.pathname !== '/login') {
+    //   window.location.replace('/login');
+    //   noLoginFlag = true;
+    //   return;
+    // }
+    // noLoginFlag = false;
     return response.data;
   },
   function (error) {

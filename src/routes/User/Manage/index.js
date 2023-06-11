@@ -32,10 +32,8 @@ const PayRecord = () => {
                 size,
                 currentPage,
                 ...filterOptions,
-                // startCreateTime: dayjs(filterOptions.startCreateTime).valueOf(),
-                // endCreateTime: dayjs(filterOptions.startCreateTime).valueOf(),
-                // startCreateTime: dayjs(filterOptions.startCreateTime).format('YYYY-MM-dd HH:mm:ss'),
-                // endCreateTime: dayjs(filterOptions.startCreateTime).format('YYYY-MM-DD'),
+                startCreateTime: filterOptions.startCreateTime === null ? undefined : dayjs(filterOptions.startCreateTime).format('YYYY-MM-DD HH:mm:ss'),
+                endCreateTime: filterOptions.endCreateTime === null ? undefined : dayjs(filterOptions.endCreateTime).format('YYYY-MM-DD HH:mm:ss'),
             });
             setLoading(false);
 

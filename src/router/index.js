@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import {
     BrowserRouter as Router,
-    // HashRouter as Router,
     Switch,
     Route,
     Redirect,
 } from 'react-router-dom';
 import { Menu, Row, Col } from 'antd';
+import classnames from 'classnames'
 
 import Header from "../components/Header";
 
@@ -57,46 +57,51 @@ function RouterApp() {
                         <Route path="*" exact component={MenuRoute}></Route>
                     </Col>
                 }
-                <Col span={globalInfo?.id ? 19 : 24} className={styles.contentWrap}>
-                    <Switch>
-                        <Route path="/login" exact component={Login}></Route>
-                        <Route path="/" exact>
-                            {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <Home />}
-                        </Route>
-                        {/* <Route path="/home" exact component={Home}></Route> */}
-                        <Route path="/home" exact>
-                            {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <Home />}
-                        </Route>
-                        {/* 站点 */}
-                        {/* <Route path="/site" exact component={Site}></Route> */}
-                        {/* 数据 */}
-                        {/* <Route path="/data" exact component={Data}></Route> */}
-                        {/* <Route path="/data/dialogueRecord" exact component={DialogueRecord}></Route> */}
-                        <Route path="/data/dialogueRecord" exact>
-                            {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <DialogueRecord />}
-                        </Route>
-                        {/* <Route path="/data/createRecord" exact component={CreateRecord}></Route> */}
-                        {/* <Route path="/data/payRecord" exact component={PayRecord}></Route> */}
-                        <Route path="/data/payRecord" exact>
-                            {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <PayRecord />}
-                        </Route>
-                        {/* 系统配置 */}
-                        {/* <Route path="/system" exact component={System}></Route> */}
-                        {/* 对话记录 */}
-                        {/* <Route path="/dialogue" exact component={Dialogue}></Route> */}
-                        {/* 用户 */}
-                        <Route path="/user/manage" exact component={UserManage}></Route>
-                        {/* <Route path="/user/feedback" exact component={UserFeedback}></Route> */}
-                        {/* <Route path="/user/black" exact component={UserBlack}></Route> */}
-                        {/* 订单 */}
-                        {/* <Route path="/order" exact component={Order}></Route> */}
-                        {/* 分销 */}
-                        {/* <Route path="/retail/retailer" exact component={Retailer}></Route>
+                <Col span={globalInfo?.loggedIn ? 19 : 24} className={classnames(styles.contentWrap, { [styles.loginWrap]: !globalInfo?.loggedIn })}>
+                    <div className={styles.contentContainer}>
+                        <Switch>
+                            <Route path="/login" exact component={Login}></Route>
+                            <Route path="/" exact>
+                                {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <Home />}
+                            </Route>
+                            {/* <Route path="/home" exact component={Home}></Route> */}
+                            <Route path="/home" exact>
+                                {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <Home />}
+                            </Route>
+                            {/* 站点 */}
+                            {/* <Route path="/site" exact component={Site}></Route> */}
+                            {/* 数据 */}
+                            {/* <Route path="/data" exact component={Data}></Route> */}
+                            {/* <Route path="/data/dialogueRecord" exact component={DialogueRecord}></Route> */}
+                            <Route path="/data/dialogueRecord" exact>
+                                {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <DialogueRecord />}
+                            </Route>
+                            {/* <Route path="/data/createRecord" exact component={CreateRecord}></Route> */}
+                            {/* <Route path="/data/payRecord" exact component={PayRecord}></Route> */}
+                            <Route path="/data/payRecord" exact>
+                                {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <PayRecord />}
+                            </Route>
+                            {/* 系统配置 */}
+                            {/* <Route path="/system" exact component={System}></Route> */}
+                            {/* 对话记录 */}
+                            {/* <Route path="/dialogue" exact component={Dialogue}></Route> */}
+                            {/* 用户 */}
+                            {/* <Route path="/user/manage" exact component={UserManage}></Route> */}
+                            <Route path="/user/manage" exact>
+                                {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <UserManage />}
+                            </Route>
+                            {/* <Route path="/user/feedback" exact component={UserFeedback}></Route> */}
+                            {/* <Route path="/user/black" exact component={UserBlack}></Route> */}
+                            {/* 订单 */}
+                            {/* <Route path="/order" exact component={Order}></Route> */}
+                            {/* 分销 */}
+                            {/* <Route path="/retail/retailer" exact component={Retailer}></Route>
                         <Route path="/retail/retailOrder" exact component={RetailOrder}></Route>
                         <Route path="/retail/retailSetting" exact component={RetailSetting}></Route>
                         <Route path="/retail/settle" exact component={Settle}></Route>
                         <Route path="/retail/cash" exact component={Cash}></Route> */}
-                    </Switch>
+                        </Switch>
+                    </div>
                 </Col>
             </Row>
         </Router>

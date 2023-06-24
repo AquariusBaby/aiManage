@@ -10,14 +10,14 @@ const Data = () => {
     const items = [
         {
             key: '1',
-            label: `系统配置`,
+            label: `支付宝支付配置`,
             children: <SystemConfig />,
         },
-        {
-            key: '2',
-            label: `接口设置`,
-            children: <InterfaceConfig />,
-        },
+        // {
+        //     key: '2',
+        //     label: `接口设置`,
+        //     children: <InterfaceConfig />,
+        // },
     ];
 
     const onChange = (key) => {

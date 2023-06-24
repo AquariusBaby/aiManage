@@ -1,72 +1,106 @@
-import React from "react";
-import { Table, Col, Row, Button, Form, Modal, Input } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Button, Form, Input, message } from 'antd';
+
+import { getSystemPayConfig, saveSystemPayConfig } from "../../../../api/systemService";
 
 const SystemConfig = () => {
-    // const [isModalOpen, setIsModalOpen] = useState(false);
+    const [updateLoading, setUpdateLoading] = useState(false);
 
-    const handleOk = () => {
-        // setIsModalOpen(false);
-    };
-    const handleCancel = () => {
-        // setIsModalOpen(false);
-    };
-    const onFinish = () => {
-        // setIsModalOpen(false);
-    };
-    const onFinishFailed = () => {
-        // setIsModalOpen(false);
+    const [form] = Form.useForm();
+
+
+    useEffect(() => {
+        getSystemPayConfig().then((res) => {
+
+            // setSystemPayConfig(res?.data || {});
+            const data = res?.data || {}
+            form.setFieldsValue({
+                appId: data?.appId,
+                appPrivateKey: data?.appPrivateKey,
+                publicKey: data?.publicKey,
+                // id: data?.id,
+            })
+        })
+    }, [])
+
+    async function onFinish(values) {
+
+        setUpdateLoading(true);
+        try {
+            // form.validateFields(async (errors, params) => {
+            //     console.log(errors, params);
+            //     if (errors) {
+            //         return;
+            //     }
+            const res = await saveSystemPayConfig({
+                ...values
+            });
+            setUpdateLoading(false);
+
+            if (res.code === 200 && res.message === null) {
+                message.success('保存成功！');
+                return;
+            }
+            message.success(res.message);
+
+            // })
+        } catch (error) {
+            setUpdateLoading(false);
+            console.log(error, 'error');
+        }
     };
 
     return <div>
         <Form
             name="basic"
-            labelCol={{ span: 8, }}
-            wrapperCol={{ span: 16, }}
+            form={form}
+            labelCol={{ span: 4, }}
+            wrapperCol={{ span: 10, }}
             initialValues={{ remember: true, }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+            // onFinishFailed={onFinishFailed}
             autoComplete="off"
         >
             <Form.Item
-                label="系统名称"
-                name="username"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your username!',
-                    },
-                ]}
+                label="应用ID"
+                name="appId"
+            // rules={[
+            //     {
+            //         required: true,
+            //         message: 'Please input your appId!',
+            //     },
+            // ]}
             >
                 <Input />
             </Form.Item>
 
             <Form.Item
-                label="后台logo"
-                name="username"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your username!',
-                    },
-                ]}
+                label="应用私钥"
+                name="appPrivateKey"
+            // rules={[
+            //     {
+            //         required: true,
+            //         message: 'Please input your appPrivateKey!',
+            //     },
+            // ]}
             >
-                <Input />
+                <Input.TextArea autoSize={{ minRows: 2, maxRows: 6 }} />
             </Form.Item>
 
             <Form.Item
-                label="ICP备案号"
-                name="password"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your password!',
-                    },
-                ]}
+                label="应用公钥"
+                name="publicKey"
+            // rules={[
+            //     {
+            //         required: true,
+            //         message: 'Please input your publicKey!',
+            //     },
+            // ]}
             >
-                <Input />
+                <Input.TextArea autoSize={{ minRows: 2, maxRows: 6 }} />
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
                 label="公网安备号"
                 name="password"
                 rules={[
@@ -77,7 +111,7 @@ const SystemConfig = () => {
                 ]}
             >
                 <Input />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
                 wrapperCol={{
@@ -85,7 +119,7 @@ const SystemConfig = () => {
                     span: 16,
                 }}
             >
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" loading={updateLoading} htmlType="submit">
                     保存
                 </Button>
             </Form.Item>

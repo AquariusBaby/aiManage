@@ -83,6 +83,9 @@ function RouterApp() {
                             </Route>
                             {/* 系统配置 */}
                             {/* <Route path="/system" exact component={System}></Route> */}
+                            <Route path="/system" exact>
+                                {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <System />}
+                            </Route>
                             {/* 对话记录 */}
                             {/* <Route path="/dialogue" exact component={Dialogue}></Route> */}
                             {/* 用户 */}
@@ -95,11 +98,19 @@ function RouterApp() {
                             {/* 订单 */}
                             {/* <Route path="/order" exact component={Order}></Route> */}
                             {/* 分销 */}
-                            {/* <Route path="/retail/retailer" exact component={Retailer}></Route>
-                        <Route path="/retail/retailOrder" exact component={RetailOrder}></Route>
-                        <Route path="/retail/retailSetting" exact component={RetailSetting}></Route>
-                        <Route path="/retail/settle" exact component={Settle}></Route>
-                        <Route path="/retail/cash" exact component={Cash}></Route> */}
+                            {/* 
+                                <Route path="/retail/retailer" exact component={Retailer}></Route>
+                                <Route path="/retail/settle" exact component={Settle}></Route>
+                            */}
+                            <Route path="/retail/retailOrder" exact>
+                                {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <RetailOrder />}
+                            </Route>
+                            <Route path="/retail/retailSetting" exact>
+                                {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <RetailSetting />}
+                            </Route>
+                            <Route path="/retail/cash" exact>
+                                {!globalInfo?.loggedIn ? <Redirect to="/login" /> : <Cash />}
+                            </Route>
                         </Switch>
                     </div>
                 </Col>

@@ -4,7 +4,7 @@ import { Menu, } from 'antd';
 import {
     // AppstoreOutlined,
     // DesktopOutlined,
-    // MailOutlined,
+    MailOutlined,
     // PieChartOutlined,
     HomeFilled,
     SignalFilled,
@@ -42,19 +42,19 @@ const items = [
         // getItem('用户反馈', '42'),
         // getItem('用户黑名单', '43'),
     ]),
-    // getItem('分销', '5', <MailOutlined />, [
-    //     getItem('分销商', '51'),
-    //     getItem('分销订单', '52'),
-    //     getItem('分销设置', '53'),
-    //     getItem('分销订单', '54'),
-    //     getItem('提现', '55'),
-    // ]),
+    getItem('分销', '5', <MailOutlined />, [
+        // getItem('分销商', '51'),
+        getItem('分销订单', '52'),
+        getItem('分销设置', '53'),
+        // getItem('分销订单', '54'),
+        getItem('提现', '55'),
+    ]),
     // getItem('订单', '6', <DesktopOutlined />),
-    // getItem('系统', '7', <MailOutlined />, [
-    //   getItem('系统配置', '71'),
-    //   getItem('内容过滤', '72'),
-    //   getItem('系统升级', '73'),
-    // ]),
+    getItem('系统', '7', <MailOutlined />, [
+        getItem('系统配置', '71'),
+        //   getItem('内容过滤', '72'),
+        //   getItem('系统升级', '73'),
+    ]),
     // getItem('系统配置', '7', <MailOutlined />),
 ];
 
@@ -96,7 +96,7 @@ const MenuRoute = () => {
                 break;
             case '6': path = '/order'
                 break;
-            case '7': path = '/system'
+            case '71': path = '/system'
                 break;
         }
 

@@ -1,33 +1,68 @@
-import React from "react";
-import { Table, Col, Row, Button, Form, Modal, Input, Switch, Radio } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Table, Button, Form, Input, Radio, message } from 'antd';
 
-const RetailSetting = ({ isModalOpen, setIsModalOpen }) => {
-    // const [isModalOpen, setIsModalOpen] = useState(false);
+import { getRetailSettingRecord, updateRetailSetting } from "../../../api/cashServcie";
 
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
-    const onFinish = () => {
+const RetailSetting = () => {
+
+    const [updateLoading, setUpdateLoading] = useState(false);
+    const [form] = Form.useForm();
+
+    async function onFinish(values) {
         // setIsModalOpen(false);
+        setUpdateLoading(true);
+        try {
+            // form.validateFields(async (errors, params) => {
+            //     console.log(errors, params);
+            //     if (errors) {
+            //         return;
+            //     }
+            const res = await updateRetailSetting({
+                ...values
+            });
+            setUpdateLoading(false);
+
+            if (res.code === 200 && res.message === null) {
+                message.success('保存成功！');
+                return;
+            }
+            message.success(res.message);
+
+            // })
+        } catch (error) {
+            setUpdateLoading(false);
+            console.log(error, 'error');
+        }
     };
-    const onFinishFailed = () => {
-        // setIsModalOpen(false);
-    };
+
+    useEffect(() => {
+        getRetailSettingRecord({
+            currentPage: 1,
+            size: 10
+        }).then((res) => {
+            // console.log(res);
+            const data = res?.data?.data?.[0] || {};
+
+            // setDetail(data);
+            form.setFieldsValue({
+                type: data?.type || 'one',
+                scale: data?.scale,
+                id: data.id,
+            })
+        })
+    }, []);
 
     return <div>
         <Form
+            form={form}
             name="basic"
-            labelCol={{ span: 8, }}
+            labelCol={{ span: 4, }}
             wrapperCol={{ span: 16, }}
-            initialValues={{ remember: true, }}
+            initialValues={{ type: 'one', }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
         >
-            <Form.Item
+            {/* <Form.Item
                 label="分销开关"
                 name="username"
                 valuePropName="checked"
@@ -39,9 +74,9 @@ const RetailSetting = ({ isModalOpen, setIsModalOpen }) => {
                 ]}
             >
                 <Switch />
-            </Form.Item>
+            </Form.Item> */}
 
-            <Form.Item
+            {/* <Form.Item
                 label="自动通过审核"
                 name="username"
                 valuePropName="checked"
@@ -53,11 +88,11 @@ const RetailSetting = ({ isModalOpen, setIsModalOpen }) => {
                 ]}
             >
                 <Switch />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
                 label="分销层级"
-                name="password"
+                name="type"
                 rules={[
                     {
                         required: true,
@@ -65,21 +100,21 @@ const RetailSetting = ({ isModalOpen, setIsModalOpen }) => {
                     },
                 ]}
             >
-                <Radio>2级</Radio>
+                <Radio.Group>
+                    <Radio value={'ONE'}>一级</Radio>
+                    <Radio value={'TWO'}>二级</Radio>
+                    <Radio value={'STORY'}>店长级别</Radio>
+                </Radio.Group>
             </Form.Item>
 
             <Form.Item
-                name="直推分佣比例"
-
-                wrapperCol={{
-                    offset: 8,
-                    span: 16,
-                }}
+                label="分佣比例"
+                name="scale"
             >
                 <Input placeholder="maxLength is 6" />
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
                 name="间推分佣比例"
                 wrapperCol={{
                     offset: 8,
@@ -98,7 +133,7 @@ const RetailSetting = ({ isModalOpen, setIsModalOpen }) => {
                 }}
             >
                 <Input.TextArea placeholder="maxLength is 6" />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
                 wrapperCol={{
@@ -106,7 +141,7 @@ const RetailSetting = ({ isModalOpen, setIsModalOpen }) => {
                     span: 16,
                 }}
             >
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" loading={updateLoading} htmlType="submit">
                     保存
                 </Button>
             </Form.Item>

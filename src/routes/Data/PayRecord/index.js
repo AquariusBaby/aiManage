@@ -45,8 +45,8 @@ const PayRecord = () => {
                 size,
                 currentPage,
                 ...filterOptions,
-                startCreateTime: filterOptions.startCreateTime === null ? undefined : dayjs(filterOptions.startCreateTime).format('YYYY-MM-DD HH:mm:ss'),
-                endCreateTime: filterOptions.endCreateTime === null ? undefined : dayjs(filterOptions.endCreateTime).format('YYYY-MM-DD HH:mm:ss'),
+                startCreateTime: !filterOptions.startCreateTime ? undefined : dayjs(filterOptions.startCreateTime).format('YYYY-MM-DD HH:mm:ss'),
+                endCreateTime: !filterOptions.endCreateTime ? undefined : dayjs(filterOptions.endCreateTime).format('YYYY-MM-DD HH:mm:ss'),
             });
             setLoading(false);
 
@@ -63,8 +63,8 @@ const PayRecord = () => {
 
     useEffect(() => {
         handleSearch({
-            size: pageOption.size,
-            currentPage: pageOption.currentPage,
+            size: 10,
+            currentPage: 1,
         })
     }, [handleSearch]);
 
@@ -202,6 +202,7 @@ const PayRecord = () => {
                 current: pageOption.currentPage,
                 pageSize: pageOption.size,
                 total: pageOption.total,
+                showSizeChanger: true,
                 // showTotal: true,
                 onChange: (page, pageSize) => handleSearch({
                     size: pageSize,

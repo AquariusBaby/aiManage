@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Table, Col, Row, Button, Space, Modal, Radio, Input, DatePicker, InputNumber, Descriptions, Tag } from 'antd';
+import { Table, Col, Row, Button, Space, Modal, Radio, Input, DatePicker, InputNumber, Tag } from 'antd';
 import {
     SearchOutlined
 } from '@ant-design/icons';
@@ -11,10 +11,6 @@ import Spacing from '../../../components/Spacing'
 
 const PayRecord = () => {
 
-    // console.log(dayjs([2023, 5, 23, 17, 6, 44]).format('YYYY-MM-DD HH:mm:ss'), 'ss')
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalContent, setModalContent] = useState({});
     const [filterOptions, setFilterOptions] = useState({});
     const [dateType, setDateType] = useState(-1);
     const [loading, setLoading] = useState(false);
@@ -32,8 +28,8 @@ const PayRecord = () => {
                 size,
                 currentPage,
                 ...filterOptions,
-                startCreateTime: filterOptions.startCreateTime === null ? undefined : dayjs(filterOptions.startCreateTime).format('YYYY-MM-DD HH:mm:ss'),
-                endCreateTime: filterOptions.endCreateTime === null ? undefined : dayjs(filterOptions.endCreateTime).format('YYYY-MM-DD HH:mm:ss'),
+                startCreateTime: !filterOptions.startCreateTime ? undefined : dayjs(filterOptions.startCreateTime).format('YYYY-MM-DD HH:mm:ss'),
+                endCreateTime: !filterOptions.endCreateTime ? undefined : dayjs(filterOptions.endCreateTime).format('YYYY-MM-DD HH:mm:ss'),
             });
             setLoading(false);
 
@@ -50,8 +46,8 @@ const PayRecord = () => {
 
     useEffect(() => {
         handleSearch({
-            size: pageOption.size,
-            currentPage: pageOption.currentPage,
+            size: 10,
+            currentPage: 1,
         })
     }, [handleSearch]);
 
@@ -86,7 +82,7 @@ const PayRecord = () => {
             dataIndex: 'isVip',
             key: 'isVip',
             render: (_, record) => (
-                <Tag color={record.isVip === 'PAY_SUCCESS' ? 'success' : 'normal'}>{record.isVip ? '是' : '否'}</Tag>
+                <Tag color={record.isVip === 'PAY_SUCCESS' ? '#f50' : '#108ee9'}>{record.isVip === 'PAY_SUCCESS' ? '是' : '否'}</Tag>
             )
         },
         {
@@ -206,6 +202,7 @@ const PayRecord = () => {
                 current: pageOption.currentPage,
                 pageSize: pageOption.size,
                 total: pageOption.total,
+                showSizeChanger: true,
                 // showTotal: true,
                 onChange: (page, pageSize) => handleSearch({
                     size: pageSize,
@@ -219,29 +216,6 @@ const PayRecord = () => {
                 })
             }}
         />
-        {/* <Modal
-            // title="回复内容"
-            open={isModalOpen}
-            onOk={() => setIsModalOpen(false)}
-            onCancel={() => setIsModalOpen(false)}
-            destroyOnClose
-            maskClosable
-            footer={
-                <Button onClick={() => setIsModalOpen(false)}>关闭</Button>
-            }
-        >
-            <div style={{ height: 500, overflowY: 'scroll' }}>
-                <Descriptions title="订单详情" bordered column={1}>
-                    <Descriptions.Item label="订单号">{modalContent.orderNum}</Descriptions.Item>
-                    <Descriptions.Item label="订单金额">{modalContent.money}</Descriptions.Item>
-                    <Descriptions.Item label="支付方式">{PayTypeEnum[modalContent.payType]}</Descriptions.Item>
-                    <Descriptions.Item label="支付状态">{PayStatusEnum[modalContent.status]}</Descriptions.Item>
-                    <Descriptions.Item label="支付时间">{modalContent.payTime.join('-')}</Descriptions.Item>
-                    <Descriptions.Item label="客户use_id">{modalContent.userId}</Descriptions.Item>
-                </Descriptions>
-            </div>
-        </Modal> */}
-
     </div>
 }
 
